@@ -9,12 +9,11 @@ if nargin==0
 else
     verbose = varargin{1};
 end
-
 load(['.',filesep,'data',filesep,'metadata.mat']);
 N = height(data);
-%%data
+
 schoollist = table;
-table;
+
 for idx = 1:N
     html = fileread(['.',filesep,'data',filesep,data.filename{idx}]);
     htmlData = readHTML(html);
