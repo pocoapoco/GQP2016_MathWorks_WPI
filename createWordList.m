@@ -35,25 +35,19 @@ freqyTbl = tabulate(wordList.word); %% contains word, count & percent
 %% Look at hist to find other rules to add to pre-processing section above
 
 %% don't focus on words that don't have information in them
-al = load('C:\Users\chitra\Documents\MATLAB\data\accountlist.mat');
-alTable = al.data;
 
-%summary(alTable)
-alCA = table2cell(alTable);  %[T.Properties.VariableNames;C]
-indSchCmp = alCA(strcmpi(alCA(:,5), 'India'), :);
-nrows = size(indSchCmp);
 
 %% Determine the size of a variable - AccountName_Formatted, 
 %% and then pre-process each University name as per the business rules.
 
-for i = 1:nrows
-    strUniversity = indSchCmp{i,3};    
-    expression = '((^(\.na)([^a-zA-Z]+)?$)|(^[^a-zA-Z]+$)|(^[A-Za-z]$))';
-    startIndex = regexpi(strUniveristy,expression);    
-    if ndims(startIndex) > 0
-        strUniversity
-    end
-end
+% for i = 1:nrows
+%     strUniversity = indSchCmp{i,3};    
+%     expression = '((^(\.na)([^a-zA-Z]+)?$)|(^[^a-zA-Z]+$)|(^[A-Za-z]$))';
+%     startIndex = regexpi(strUniveristy,expression);    
+%     if ndims(startIndex) > 0
+%         strUniversity
+%     end
+% end
 
 
 
