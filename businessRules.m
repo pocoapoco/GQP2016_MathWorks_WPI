@@ -5,20 +5,16 @@ classdef businessRules
     properties
     end
     
-    methods
-        function correctInvalidAcctNames(schools)
-                [nrows, ~] = size(schools);
-                for i = 1:nrows
-                    univName = schools{i,3};    
-                    %% Regex that matches invalide accountname_formatted
-                    %% .na, 123, A, -, ..
-                    expression = '((^(\.na)([^a-zA-Z]+)?$)|(^[^a-zA-Z]+$)|(^[A-Za-z]$))';
-                    startIndex = regexp(univName,expression, 'once'); 
-                    if ~isempty(startIndex)
-                        univName
-                    end
-                end
+    methods(Static)
+        function [ p ] = markInvalidAccts( univName )
+            %% Regex that matches invalid accountname_formatted
+            %% .na, 123, A, -, ..
+            expression = '((^(\.na)([^a-zA-Z]+)?$)|(^[^a-zA-Z]+$)|(^[A-Za-z]$))';
+            startIndex = regexp(univName,expression, 'once');
+            p = cellfun(@isempty,startIndex);
         end
+        
+        
         
         
     end

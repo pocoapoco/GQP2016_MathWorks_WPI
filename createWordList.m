@@ -29,16 +29,10 @@ writetable(wordList,filename,'Sheet',1)
 % Rename Univ to University 
 % Rename misspellings
 
-
-
-
-
 %% Generate Word Count
 load('wordlist.mat')
 freqyTbl = tabulate(wordList.word); %% contains word, count & percent
 %% Look at hist to find other rules to add to pre-processing section above
-
-
 
 %% don't focus on words that don't have information in them
 al = load('C:\Users\chitra\Documents\MATLAB\data\accountlist.mat');
