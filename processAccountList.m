@@ -23,7 +23,15 @@ temp.Properties.VariableNames{end} = 'Process';
 %% Get the subset by country and valid account name to process further
 TtoProcess = temp(temp.Process == true,:);
 
+%% Correct misspellings
+rule2 = @businessRules.correctMisspellings;
+t2 = varfun(rule2,TtoProcess,'InputVariables','AccountName_Formatted');
+TtoProcess.AccountName_Formatted = t2.Fun_AccountName_Formatted;
 
+%% Remove Accts corresponding to Non-University
+rule3 = @businessRules.markCompanyAccts;
+t3 = varfun(rule3,TtoProcess,'InputVariables','AccountName_Formatted');
+TtoProcess.Process = t3.Fun_AccountName_Formatted;
 
 
 
