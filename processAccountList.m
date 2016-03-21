@@ -44,4 +44,4 @@ tSchools = sl.schoollist;
 %% Get UniversityLocalName filtered by Country for which you are matching
 Tactual = tSchools(strcmpi(table2cell(tSchools(:,13)), 'India'),:);
 
-calculateScore(Tunique, Tactual);
+Tscore = calculateScore(Tunique, Tactual);

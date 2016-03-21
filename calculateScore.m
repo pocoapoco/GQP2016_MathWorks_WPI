@@ -1,4 +1,4 @@
-function calculateScore(Ttest, Tactual)
+function T = calculateScore(Ttest, Tactual)
 % %% EXAMPLE
 % %% d1 - Levenstein distance, d2 - Levenstein and editor distances
 % d1=strdist('statistics','mathematics')
@@ -26,26 +26,26 @@ function calculateScore(Ttest, Tactual)
 % end
 
 %% Choose sample test
-[sample,idx] = datasample(Ttest(:,1),10);
+[sample,idx] = datasample(Ttest(:,1),50);
 %Ttest(1:5,:)
-z = Tactual(1:5,:);
+%z = Tactual(1:5,:);
 row = 1;
 %% pre-allocate to the size of cartesian product
-rows = (length(sample)*height(z));
+rows = (length(sample)*height(Tactual));
 C = cell(rows,5);
 for i = 1:length(sample)
-    for j = 1:height(z) %Tactual
+    for j = 1:height(Tactual) %Tactual
         actName = sample(i,1);
-        univName = z(j,2); %Tactual
+        univName = Tactual(j,2); %Tactual
         univName = table2cell(univName);
         score = strdist(actName{1}, univName{1}, 2, 1);
-       
+        
         C(row,:) = {actName{1},univName{1}, score(1), score(2), (score(2)-score(1))};
         row = row+1;     
     end
 end
 
-Toutput = cell2table(C,'VariableNames', {'AccountName', 'UniversityName', 'LScore', 'EScore', 'Substitutions'});
-Toutput
+T = cell2table(C,'VariableNames', {'AccountName', 'UniversityName', 'LScore', 'EScore', 'Substitutions'});
+
 
 
