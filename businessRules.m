@@ -45,7 +45,7 @@ classdef businessRules
         function [ p ] = markCompanyAccts( univName )
             %% Regex that matches invalid accountname_formatted 
             %% Looks for limited keyword to remove the company name
-            expression = '\<Limited\>(?!\w)';
+            expression = '\<Limited\>(?!\w)'; % include corporation
             startIndex = regexpi(univName,expression, 'once');
             p = cellfun(@isempty,startIndex);
         end
