@@ -35,10 +35,13 @@ Ttest.Process = t3.Fun_AccountName_Formatted;
 
 Ttest = Ttest(Ttest.Process == true,:);
 
+%% Get unique account names
+Tunique = unique(Ttest.AccountName_Formatted);
+
 %% Load actual Universities dataset
 sl = load('C:\Users\chitra\Documents\MATLAB\data\schoollist.mat');
 tSchools = sl.schoollist;
 %% Get UniversityLocalName filtered by Country for which you are matching
 Tactual = tSchools(strcmpi(table2cell(tSchools(:,13)), 'India'),:);
 
-calculateScore(Ttest, Tactual);
+calculateScore(Tunique, Tactual);

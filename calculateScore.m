@@ -1,18 +1,18 @@
 function calculateScore(Ttest, Tactual)
-%% EXAMPLE
-%% d1 - Levenstein distance, d2 - Levenstein and editor distances
-d1=strdist('statistics','mathematics')
-d2=strdist('statistics','mathematics',2)
-%%
-%% |How to count substitutions:|
-disp('Quantity of substitutions:')
-disp(d2(2)-d2(1))
-%%
-%% |Case sensitive:|
-strdist('Havelock North High School','Worcester Polytechnic Institute',2)
-%%
-%% |Case non-sensitive:|
-strdist('Worcester Polytechnic Institute','Worcester Polytechnic Institute1',2,1)
+% %% EXAMPLE
+% %% d1 - Levenstein distance, d2 - Levenstein and editor distances
+% d1=strdist('statistics','mathematics')
+% d2=strdist('statistics','mathematics',2)
+% %%
+% %% |How to count substitutions:|
+% disp('Quantity of substitutions:')
+% disp(d2(2)-d2(1))
+% %%
+% %% |Case sensitive:|
+% strdist('Havelock North High School','Worcester Polytechnic Institute',2)
+% %%
+% %% |Case non-sensitive:|
+% strdist('Worcester Polytechnic Institute','Worcester Polytechnic Institute1',2,1)
 
 % act = {'Indian Institute of Technology Roorkee'};
 % tst = {'IIT Roorkee'};
@@ -25,25 +25,27 @@ strdist('Worcester Polytechnic Institute','Worcester Polytechnic Institute1',2,1
 %     end
 % end
 
-Ttest(1:5,:)
-z = Tactual(1:5,:)
-row = 1;
 %% Choose sample test
-[sample,idx] = datasample(Ttest(:,2),10);
+[sample,idx] = datasample(Ttest(:,1),10);
+%Ttest(1:5,:)
+z = Tactual(1:5,:);
+row = 1;
 %% pre-allocate to the size of cartesian product
-C = cell(height(sample) * height(z),5);
-for i = 1:height(sample)
+rows = (length(sample)*height(z));
+C = cell(rows,5);
+for i = 1:length(sample)
     for j = 1:height(z) %Tactual
         actName = sample(i,1);
         univName = z(j,2); %Tactual
-        score = strdist(actName,univName, 2, 1);
+        univName = table2cell(univName);
+        score = strdist(actName{1}, univName{1}, 2, 1);
        
-        C(row) = {actName, univName, score(1), score(2), score(2)-score(1) };
-              
+        C(row,:) = {actName{1},univName{1}, score(1), score(2), (score(2)-score(1))};
+        row = row+1;     
     end
 end
 
-Toutput = cell2table(C,'VariableNames', 'AccountName', 'UniversityName', 'L-Score', 'E-Score', 'Substitutions'});
-
+Toutput = cell2table(C,'VariableNames', {'AccountName', 'UniversityName', 'LScore', 'EScore', 'Substitutions'});
+Toutput
 
 
