@@ -1,9 +1,10 @@
 function T = calculateScore(Ttest, Tactual)
 
 %% Choose sample test
-[sample,idx] = datasample(Ttest(:,1),50);
+%% Change sample size here
+[sample,idx] = datasample(Ttest(:,1),5);
 
-%%sample = {'Gujarat Technological University'};
+%sample = {'Punjabi University'};
 
 %% pre-allocate to the size of cartesian product
 rows = (length(sample)*height(Tactual));

@@ -35,6 +35,10 @@ Ttest.Process = t3.Fun_AccountName_Formatted;
 
 Ttest = Ttest(Ttest.Process == true,:);
 
+%% convert accountname to lowercase to get only unique values
+Ttest.AccountName = lower(Ttest.AccountName);
+Ttest.AccountName_Formatted = lower(Ttest.AccountName_Formatted);
+
 %% Get unique account names
 Tunique = unique(Ttest.AccountName_Formatted);
 
@@ -45,3 +49,7 @@ tSchools = sl.schoollist;
 Tactual = tSchools(strcmpi(table2cell(tSchools(:,13)), 'India'),:);
 
 Tscore = calculateScore(Tunique, Tactual);
+
+%% Copy Tscore to excel sheet for more analysis
+filename = 'scorelist.xlsx';
+writetable(Tscore,filename,'Sheet',1)
