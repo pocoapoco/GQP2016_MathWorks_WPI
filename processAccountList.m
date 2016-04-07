@@ -12,8 +12,8 @@ height(alTable);
 %alTable = [alTable temp];
 
 %% Mark invalid rows after filtering by Country
-temp = alTable(strcmpi(table2cell(alTable(:,5)), 'India'),:);
-rule1 = @businessRules.markInvalidAccts;
+temp = alTable(strcmpi(table2cell(alTable(:,5)), 'United States'),:);
+rule1 = @businessRules.markInvalidAccts1;
 
 %% Records that have invalid Account Names
 t1 = varfun(rule1,temp,'InputVariables','AccountName_Formatted');
@@ -46,7 +46,7 @@ Tunique = unique(Ttest.AccountName_Formatted);
 sl = load('C:\Users\chitra\Documents\MATLAB\data\schoollist.mat');
 tSchools = sl.schoollist;
 %% Get UniversityLocalName filtered by Country for which you are matching
-Tactual = tSchools(strcmpi(table2cell(tSchools(:,13)), 'India'),:);
+Tactual = tSchools(strcmpi(table2cell(tSchools(:,13)), 'United States'),:);
 
 Tscore = calculateScore(Tunique, Tactual);
 
