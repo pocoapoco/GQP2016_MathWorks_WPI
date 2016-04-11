@@ -1,4 +1,4 @@
-function [jaccardIdx] = jaccard_simlarity(word_Orig,word_User,n_gram)
+function [jaccardIdx] = jaccard_similarity(word_Orig,word_User,n_gram)
 % Jaccard index and distance co-efficient of Actual university name with
 % that of user entered university name
 % Usage: [index] = jaccard_coefficient(Orig_word,User_Image,n_gram);
@@ -7,17 +7,17 @@ function [jaccardIdx] = jaccard_simlarity(word_Orig,word_User,n_gram)
 % N-grams: Unigram, Bigram and Trigram are implemented
 
 if (n_gram == 1)
-    s1 = regexp(word_Orig,'<s>|\w*|</s>','split');
-    s2 = regexp(word_User,'<s>|\w*|</s>','split');
+    s1 = regexp(word_Orig,'<s>|\w*|</s>','match');
+    s2 = regexp(word_User,'<s>|\w*|</s>','match');
 elseif (n_gram == 2)
-    z=regexp(word_Orig,'<s>|\w*|</s>','split'); %'\w*','match'
+    z=regexp(word_Orig,'<s>|\w*|</s>','match'); %'\w*','match'
     s1 = strcat(z(1:end-1),{' '},z(2:end));
-    z=regexp(word_User,'<s>|\w*|</s>','split');
+    z=regexp(word_User,'<s>|\w*|</s>','match');
     s2 = strcat(z(1:end-1),{' '},z(2:end));
 elseif (n_gram == 3)
-    words=regexp(word_Orig,'<s>|\w*|</s>','split'); %<s>|\w*|</s>
+    words=regexp(word_Orig,'<s>|\w*|</s>','match'); %<s>|\w*|</s>
     s1=cellfun(@(x,y,z) [x ' ' y ' ' z],words(1:end-2), words(2:end-1),words(3:end),'un',0);
-    words=regexp(word_User,'<s>|\w*|</s>','split'); %<s>|\w*|</s>
+    words=regexp(word_User,'<s>|\w*|</s>','match'); %<s>|\w*|</s>
     s2=cellfun(@(x,y,z) [x ' ' y ' ' z],words(1:end-2), words(2:end-1),words(3:end),'un',0);
 end
 

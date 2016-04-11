@@ -48,8 +48,11 @@ tSchools = sl.schoollist;
 %% Get UniversityLocalName filtered by Country for which you are matching
 Tactual = tSchools(strcmpi(table2cell(tSchools(:,13)), 'United States'),:);
 
-Tscore = calculateScore(Tunique, Tactual);
+%% convert UniversityLocalName to lowercase to perform case-insensitive match
+Tactual.UniversityLocalName = lower(Tactual.UniversityLocalName);
 
-%% Copy Tscore to excel sheet for more analysis
-filename = 'scorelist.xlsx';
-writetable(Tscore,filename,'Sheet',1)
+% Tscore = calculateScore(Tunique, Tactual);
+% 
+% %% Copy Tscore to excel sheet for more analysis
+% filename = 'scorelist.xlsx';
+% writetable(Tscore,filename,'Sheet',1)
