@@ -6,7 +6,7 @@ classdef businessRules
     end
     
     methods(Static)
-        function [ p ] = markInvalidAccts1( univName )
+        function [ p ] = markInvalidAccts( univName )
             %% Regex that matches invalid accountname_formatted
             %% .na, 123, A, -, .., coursera, Mooc, (ID:
             expression = '((^(\.na)([^a-zA-Z]+)?$)|(^[^a-zA-Z]+$)|(^[A-Za-z]$)|(\(ID:)|coursera|Mooc)';

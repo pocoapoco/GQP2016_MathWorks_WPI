@@ -2,9 +2,9 @@ function T = calculateScore(Ttest, Tactual)
 
 %% Choose sample test
 %% Change sample size here
-[sample,idx] = datasample(Ttest(:,1),5);
-
-%sample = {'Punjabi University'};
+[sample,idx] = datasample(Ttest(:,1),100);
+%%load('sample.mat');
+%%sample = {'punjabi University'};
 
 %% pre-allocate to the size of cartesian product
 rows = (length(sample)*height(Tactual));
@@ -37,8 +37,9 @@ for i = 1:length(sample)
         %% substitution cost = 0 and L-Score less than equal 2 are mostly exact matches
         %% once a record hits an exact match, do not run the same record against others
         if (score(1)<=2 && substitutions == 0)
-            if counter>2
-                subC(1:counter-1,:) = [];   
+            last = find(~cellfun(@isempty,subC(:,1)));
+            if last(end)>1
+                subC(1:last(end)-1,:) = [];   
             end
             break
         end        

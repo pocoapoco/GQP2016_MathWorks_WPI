@@ -13,7 +13,7 @@ height(alTable);
 
 %% Mark invalid rows after filtering by Country
 temp = alTable(strcmpi(table2cell(alTable(:,5)), 'United States'),:);
-rule1 = @businessRules.markInvalidAccts1;
+rule1 = @businessRules.markInvalidAccts;
 
 %% Records that have invalid Account Names
 t1 = varfun(rule1,temp,'InputVariables','AccountName_Formatted');
