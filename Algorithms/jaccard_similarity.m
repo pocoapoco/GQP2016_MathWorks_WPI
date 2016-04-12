@@ -1,10 +1,25 @@
-function [jaccardIdx] = jaccard_similarity(word_Orig,word_User,n_gram)
+function [jaccardIdx] = jaccard_similarity(word_Orig,word_User,n_gram, remove_stop)
 % Jaccard index and distance co-efficient of Actual university name with
 % that of user entered university name
 % Usage: [index] = jaccard_coefficient(Orig_word,User_Image,n_gram);
 
 % Binarize the words based on the N-grams. Ignore special characters like -
 % N-grams: Unigram, Bigram and Trigram are implemented
+
+% Avoid generating NaN for bigram and trigram when the length of the word
+% is lesser than the n_gram
+if remove_stop
+ [word_Orig, word_User]= remove_stopword(word_Orig, word_User);
+end
+
+s1 = regexp(word_Orig,'<s>|\w*|</s>','match');
+s2 = regexp(word_User,'<s>|\w*|</s>','match');
+
+if ((length(s1)<2 || length(s2)<2) && n_gram == 2)
+    n_gram = 1;
+elseif ((length(s1)<3 || length(s2)<3) && n_gram == 3)
+    n_gram = 2;
+end
 
 if (n_gram == 1)
     s1 = regexp(word_Orig,'<s>|\w*|</s>','match');
