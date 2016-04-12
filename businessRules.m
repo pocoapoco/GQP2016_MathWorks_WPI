@@ -55,6 +55,14 @@ classdef businessRules
             startIndex = regexpi(univName,expression, 'once');
             p = cellfun(@isempty,startIndex);
         end
+        
+        function [ w ] = removePunctuations( univName)
+            %% Regex that ignores Punctuations
+            expression = '[\.-,\''\/\\_()]';
+            replace = '';
+            w = regexprep(univName,expression,replace,'ignorecase');             
+        end
+        
     end
     
 end
