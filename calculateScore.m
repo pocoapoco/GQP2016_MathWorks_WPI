@@ -1,6 +1,6 @@
 function T = calculateScore(Ttest, Tactual)
 
-%% Choose sample test
+%% Choose random sample test
 %% Change sample size here
 [sample,idx] = datasample(Ttest(:,1),100);
 %%load('sample.mat');
@@ -18,10 +18,10 @@ for i = 1:length(sample)
     actName = sample(i,1);
     
     %% run sample only across the record that starts with the same alphabet 
-    Talphabet = Tactual(strncmpi(table2cell(Tactual(:,2)),actName{1}(1),1),:);
+    Talphabet = Tactual(strncmpi(table2cell(Tactual(:,'UniversityLocalName')),actName{1}(1),1),:);
     for j = 1:height(Talphabet) 
         
-        univName = Talphabet(j,2); 
+        univName = Talphabet(j,'UniversityLocalName'); 
         univName = table2cell(univName);
         score = strdist(actName{1}, univName{1}, 2, 1);
         substitutions = (score(2)-score(1));

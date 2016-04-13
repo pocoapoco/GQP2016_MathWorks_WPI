@@ -1,18 +1,10 @@
-clear,clc
+function Tscore =  processAccountList(pathAccountList, pathSchoollist, country)
 %% don't focus on words that don't have information in them
-al = load('C:\Users\chitra\Documents\MATLAB\data\accountlist.mat');
+al = load(pathAccountList);
 alTable = al.data;
-% summary(alTable);
-height(alTable);
-
-%% create empty column Process = Yes/No
-%%temp(height(alTable),1)= true;
-%temp = table(true(height(alTable),1),'VariableNames',{'Process'});
-%% Union to AccountList table
-%alTable = [alTable temp];
 
 %% Mark invalid rows after filtering by Country
-temp = alTable(strcmpi(table2cell(alTable(:,5)), 'United States'),:);
+temp = alTable(strcmpi(table2cell(alTable(:,'Country')), country),:);
 rule1 = @businessRules.markInvalidAccts;
 
 %% Records that have invalid Account Names
@@ -36,23 +28,36 @@ Ttest.Process = t3.Fun_AccountName_Formatted;
 Ttest = Ttest(Ttest.Process == true,:);
 
 %% convert accountname to lowercase to get only unique values
-Ttest.AccountName = lower(Ttest.AccountName);
+% Ttest.AccountName = lower(Ttest.AccountName);
 Ttest.AccountName_Formatted = lower(Ttest.AccountName_Formatted);
 
 %% Get unique account names
 Tunique = unique(Ttest.AccountName_Formatted);
 
 %% Load actual Universities dataset
-sl = load('C:\Users\chitra\Documents\MATLAB\data\schoollist.mat');
-tSchools = sl.schoollist;
-%% Get UniversityLocalName filtered by Country for which you are matching
-Tactual = tSchools(strcmpi(table2cell(tSchools(:,13)), 'United States'),:);
+sl = load(pathSchoollist);
+isSchoollist = strfind(pathSchoollist, 'schoollist');
+
+% Apply filter to only schoolist dataset
+% IPED is already filtered by Country US
+% TODO: ELIMINATE THIS WHEN YOU GET A UNIFIED DATASET
+if ~isempty(isSchoollist)
+    tSchools = sl.schoollist;
+    %% Get UniversityLocalName filtered by Country for which you are matching
+    Tactual = tSchools(strcmpi(table2cell(tSchools(:,'Country')), country),:);
+elseif (isempty(isSchoollist) && strcmpi(country,'United States'))
+    % Rename few attributes to match the schoollist dataset
+    tSchools = sl.hd2014;
+    tSchools.Properties.VariableNames{2} = 'UniversityLocalName';
+    tSchools.Properties.VariableNames{15} = 'URL';
+    Tactual = tSchools;
+end
 
 %% convert UniversityLocalName to lowercase to perform case-insensitive match
 Tactual.UniversityLocalName = lower(Tactual.UniversityLocalName);
 
-% Tscore = calculateScore(Tunique, Tactual);
-% 
-% %% Copy Tscore to excel sheet for more analysis
-% filename = 'scorelist.xlsx';
-% writetable(Tscore,filename,'Sheet',1)
+Tscore = calculateScore(Tunique, Tactual);
+
+%% Copy Tscore to excel sheet for more analysis
+filename = 'scorelist.xlsx';
+writetable(Tscore,filename,'Sheet',1)
