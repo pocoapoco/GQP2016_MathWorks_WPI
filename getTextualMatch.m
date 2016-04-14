@@ -15,5 +15,10 @@ country = char(Countries.United_States);
 % remove special characters if any from the enumeration
 country = regexprep(country,'[_]',' ','ignorecase');
 
-TMatch = processAccountList(pathAccountList, pathSchoollist, country);
+% Schoollist is pre-processed and saved - ONLY ONE TIME RUN
+%%TSchools = preProcessUniversities(pathSchoollist, country);
+
+% Accountlist is processed every time you look for a match from a different
+% country
+TAccounts = processAccountList(pathAccountList, country);
 

@@ -38,6 +38,6 @@ stopwords_cellstring={'a', 'about', 'above', 'above', 'across', 'after', ...
     'you', 'your', 'yours', 'yourself', 'yourselves', 'the'};
 
 word = regexp(word_Orig,'\s','Split');
-stopRemoveOrig = strjoin(word(~ismember(word,stopwords_cellstring)),' ')
+stopRemoveOrig = strjoin(word(~ismember(word,stopwords_cellstring)),' ');
 word = regexp(word_User,'\s','Split');
-stopRemoveUser = strjoin(word(~ismember(word,stopwords_cellstring)),' ')
+stopRemoveUser = strjoin(word(~ismember(word,stopwords_cellstring)),' ');

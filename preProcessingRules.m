@@ -1,4 +1,4 @@
-classdef businessRules
+classdef preProcessingRules
     %businessRules Implements the business rules for data pre-processing
     %before running the approximate string matching algorithm
     
@@ -8,8 +8,8 @@ classdef businessRules
     methods(Static)
         function [ p ] = markInvalidAccts( univName )
             %% Regex that matches invalid accountname_formatted
-            %% .na, 123, A, -, .., coursera, Mooc, (ID:
-            expression = '((^(\.na)([^a-zA-Z]+)?$)|(^[^a-zA-Z]+$)|(^[A-Za-z]$)|(\(ID:)|coursera|Mooc)';
+            %% .na, 123, A, -, .., coursera, Mooc, (ID:, empty string 
+            expression = '((^(\.na)([^a-zA-Z]+)?$)|(^[^a-zA-Z]+$)|(^[A-Za-z]$)|(^$)|(\(ID:)|coursera|Mooc)';
             startIndex = regexpi(univName,expression);
             p = cellfun(@isempty,startIndex);
         end   
@@ -61,6 +61,43 @@ classdef businessRules
             expression = '[\.-,\''\/\\_()]';
             replace = '';
             w = regexprep(univName,expression,replace,'ignorecase');             
+        end
+        
+        function [ w ] = removeIrrelevantWords( univName)
+             %% Regex that ignores Punctuations
+            expression = '[\.-,\''\/\\_()]';
+            replace = '';
+            w = regexprep(univName,expression,replace,'ignorecase');    
+        end
+        
+        function [ wl ] = generateUnigram( univName)
+            wl = cell(length(univName),1);
+            for k=1:length(univName)
+                w = regexp(univName{k},'<s>|\w*|</s>','match');
+                wl(k,1) = {strjoin(cellstr(w),',')};
+            end            
+        end
+        
+        function [ wl ] = generateBigram( univName)
+            wl = cell(length(univName),1);
+            for k=1:length(univName)
+                w = regexp(univName{k},'<s>|\w*|</s>','match');
+                if (length(w)>=2)                    
+                    w = strcat(w(1:end-1),{' '},w(2:end));
+                    wl(k,1) = {strjoin(cellstr(w),',')};
+                end                
+            end           
+        end
+        
+        function [ wl ] = generateTrigram( univName)
+             wl = cell(length(univName),1);
+            for k=1:length(univName)
+                w = regexp(univName{k},'<s>|\w*|</s>','match');
+                if (length(w)>=3)                    
+                    w=cellfun(@(x,y,z) [x ' ' y ' ' z],w(1:end-2), w(2:end-1),w(3:end),'un',0);
+                    wl(k,1) = {strjoin(cellstr(w),',')};
+                end                
+            end    
         end
         
     end

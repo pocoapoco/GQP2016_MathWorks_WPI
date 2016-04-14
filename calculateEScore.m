@@ -1,4 +1,4 @@
-function T = calculateScore(Ttest, Tactual)
+function T = calculateEScore(Ttest, Tactual)
 
 %% Choose random sample test
 %% Change sample size here
