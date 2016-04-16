@@ -2,9 +2,9 @@ function T = calculateEScore(TAccounts, TSchools)
 
 %% Choose random sample test
 %% Change sample size here
-[sample,idx] = datasample(TAccounts(:,1),100);
-%%load('sample.mat');
-%%sample = {'punjabi University'};
+%%[sample,idx] = datasample(TAccounts(:,1),100);
+load('sample.mat');
+%%sample = {'west virginia university'};
 
 %% pre-allocate to the size of cartesian product
 rows = (length(sample)*height(TSchools));
@@ -12,31 +12,33 @@ scoreC = cell(rows,6);
 
 for i = 1:length(sample)
     %% pre-allocate to the size of the actual set 
-    %% remove all those that does not fulfill the approx. match criteria
+    %% remove all those that does not fulfill the approx. match criteria - explained below
     subC = cell(height(TSchools),6); 
     counter = 1;
-    actName = sample(i,'LAccountName');
+    actName = sample(i,1); %'LAccountName'
     
-    %% run sample only across the record that starts with the same alphabet 
-    Talphabet = TSchools(strncmpi(table2cell(TSchools(:,'LUniversityLocalName')),actName{1}(1),1),:);
-    for j = 1:height(Talphabet) 
-        
-        univName = Talphabet(j,'LUniversityLocalName'); 
+    %% run sample only across the candidate matches
+    TCandidates = getCandidateMatches( actName{1}, TSchools);
+    
+    for j = 1:height(TCandidates)         
+        univName = TCandidates(j,'LUniversityLocalName'); 
         univName = table2cell(univName);
-        url = TSchools(j,'URL');
+        UNIVName = TCandidates(j,'UniversityLocalName');
+        UNIVName = table2cell(UNIVName);
+        url = TCandidates(j,'URL');
         url = table2cell(url);
         score = strdist(actName{1}, univName{1}, 2, 1);
         substitutions = (score(2)-score(1));
-       
+              
         %% set threshold limit here
-        %% TODO - yet to determine a good threshold
-        if (score(1)<=10) %% COME UP WITH GOOD CONDITION
-            subC(counter,:) = {actName{1},univName{1}, url, score(1), score(2), substitutions};
+        %% Approx. Match criteria
+        %% Jaccard Index for Bigram, Unigram or Trigram greater than 0.7 yields accurate results
+        if (score(1)<=5) 
+            subC(counter,:) = {actName{1}, UNIVName{1}, url{1}, score(1), score(2), substitutions};
             counter = counter+1;
         end
                 
-        %% Approx. Match criteria
-        %% substitution cost = 0 and L-Score less than equal 2 are mostly exact matches
+        %% If the record hits an exact match, delete the other nearest matches
         %% once a record hits an exact match, do not run the same record against others
         if (score(1)<=2 && substitutions == 0)
             last = find(~cellfun(@isempty,subC(:,1)));
@@ -48,10 +50,10 @@ for i = 1:length(sample)
     end
     
     %% if no match is found within the threshold defined,
-    %% enter the record in the score table with all scores = 100
-    %% filtering by 100 score can be used for evaluating accuracy and precision later
+    %% substitution cost = 0 and L-Score less than equal 2 are mostly exact matches
+    %% filtering by 100-score can be used for evaluating accuracy and precision later
     if (isempty(find(~cellfun(@isempty,subC(1,1)), 1)))
-        subC(1,:) = {actName{1},' ', 100, 100, 100};
+        subC(1,:) = {actName{1},' ', ' ', 100, 100, 100};
     end
     
     to = find(~cellfun(@isempty,subC(:,1)));

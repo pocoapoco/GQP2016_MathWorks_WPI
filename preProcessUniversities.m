@@ -35,19 +35,19 @@ elseif (isempty(isSchoollist) && strcmpi(country,'United States'))
     
     % Generate unigram for universitylocalname
     rule4 = @preProcessingRules.generateUnigram;
-    t2 = varfun(rule4,TSchools,'InputVariables','UniversityLocalName');
+    t2 = varfun(rule4,TSchools,'InputVariables','LUniversityLocalName');
     TSchools = [TSchools t2];
     TSchools.Properties.VariableNames{end} = 'Unigrams';
     
     % Generate bigram for universitylocalname
     rule5 = @preProcessingRules.generateBigram;
-    t3 = varfun(rule5,TSchools,'InputVariables','UniversityLocalName');
+    t3 = varfun(rule5,TSchools,'InputVariables','LUniversityLocalName');
     TSchools = [TSchools t3];
     TSchools.Properties.VariableNames{end} = 'Bigrams';
     
     % Generate trigram for universitylocalname
     rule6 = @preProcessingRules.generateTrigram;
-    t4 = varfun(rule6,TSchools,'InputVariables','UniversityLocalName');
+    t4 = varfun(rule6,TSchools,'InputVariables','LUniversityLocalName');
     TSchools = [TSchools t4];
     TSchools.Properties.VariableNames{end} = 'Trigrams';
     

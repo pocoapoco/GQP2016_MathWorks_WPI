@@ -3,7 +3,7 @@ function T = calculateJScore(TAccounts, TSchools)
 %% Change sample test & size here
 %%[sample,idx] = datasample(TAccounts(:,1),100);
 load('sample.mat');
-%sample = {'(SUNY) Empire State College'};
+%%sample = {'west virginia university'};
 
 %% pre-allocate to the size of cartesian product
 rows = (length(sample)*height(TSchools));
@@ -26,13 +26,13 @@ for i = 1:length(sample)
         UNIVName = table2cell(UNIVName);
         url = TCandidates(j,'URL');
         url = table2cell(url);
-        score = jaccard_similarity(lower(actName{1}), univName{1}, 2, true);
+        score = jaccard_similarity(actName{1}, univName{1}, 2, true);
               
         %% set threshold limit here
         %% Approx. Match criteria
         %% Jaccard Index for Bigram, Unigram or Trigram greater than 0.7 yields accurate results
         if (score>=0.7) 
-            subC(counter,:) = {actName{1}, UNIVName, url{1}, score};
+            subC(counter,:) = {actName{1}, UNIVName{1}, url{1}, score};
             counter = counter+1;
         end
                 

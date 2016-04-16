@@ -26,10 +26,10 @@ load('TAccounts.mat');
 
 % Jaccard/Levenshtein for similarity computation
 % Jaccard Index
-Tscore = calculateJScore(TAccounts, TSchools);
+%Tscore = calculateJScore(TAccounts, TSchools);
 
 % Levenshtein distance
-%Tscore = calculateEScore(TAccounts, TSchools);
+Tscore = calculateEScore(TAccounts, TSchools);
 
 %% Copy Tscore to excel sheet for more analysis
 filename = 'scorelist.xlsx';

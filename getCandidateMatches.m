@@ -9,8 +9,8 @@ function [ TCandidates ] = getCandidateMatches( actName, TSchools )
         sBigram = TSchools(k,'Bigrams');
         sBigram = table2array(sBigram);
         sBigram = strsplit(sBigram{1},',');
-
-        if (~strcmpi(sBigram,'NA') & (ismember(sBigram,aBigram)))
+        idx = ismember(sBigram,aBigram);
+        if (~strcmpi(sBigram,'NA') & (~isempty(find(idx,1))))
              index(k) = true;
         end
     end
