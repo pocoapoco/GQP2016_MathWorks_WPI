@@ -1,4 +1,4 @@
-function [jaccardIdx] = jaccard_similarity(word_Orig,word_User,n_gram, remove_stop)
+function [jaccardIdx] = jaccard_similarity(word_Orig, word_User, n_gram, remove_stop)
 % Jaccard index and distance co-efficient of Actual university name with
 % that of user entered university name
 % Usage: [index] = jaccard_coefficient(Orig_word,User_Image,n_gram);

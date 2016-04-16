@@ -1,35 +1,37 @@
-function T = calculateEScore(Ttest, Tactual)
+function T = calculateEScore(TAccounts, TSchools)
 
 %% Choose random sample test
 %% Change sample size here
-[sample,idx] = datasample(Ttest(:,1),100);
+[sample,idx] = datasample(TAccounts(:,1),100);
 %%load('sample.mat');
 %%sample = {'punjabi University'};
 
 %% pre-allocate to the size of cartesian product
-rows = (length(sample)*height(Tactual));
-scoreC = cell(rows,5);
+rows = (length(sample)*height(TSchools));
+scoreC = cell(rows,6);
 
 for i = 1:length(sample)
     %% pre-allocate to the size of the actual set 
     %% remove all those that does not fulfill the approx. match criteria
-    subC = cell(height(Tactual),5); 
+    subC = cell(height(TSchools),6); 
     counter = 1;
-    actName = sample(i,1);
+    actName = sample(i,'LAccountName');
     
     %% run sample only across the record that starts with the same alphabet 
-    Talphabet = Tactual(strncmpi(table2cell(Tactual(:,'UniversityLocalName')),actName{1}(1),1),:);
+    Talphabet = TSchools(strncmpi(table2cell(TSchools(:,'LUniversityLocalName')),actName{1}(1),1),:);
     for j = 1:height(Talphabet) 
         
-        univName = Talphabet(j,'UniversityLocalName'); 
+        univName = Talphabet(j,'LUniversityLocalName'); 
         univName = table2cell(univName);
+        url = TSchools(j,'URL');
+        url = table2cell(url);
         score = strdist(actName{1}, univName{1}, 2, 1);
         substitutions = (score(2)-score(1));
        
         %% set threshold limit here
         %% TODO - yet to determine a good threshold
         if (score(1)<=10) %% COME UP WITH GOOD CONDITION
-            subC(counter,:) = {actName{1},univName{1}, score(1), score(2), substitutions};
+            subC(counter,:) = {actName{1},univName{1}, url, score(1), score(2), substitutions};
             counter = counter+1;
         end
                 
@@ -58,7 +60,7 @@ for i = 1:length(sample)
     
 end
 
-T = cell2table(scoreC,'VariableNames', {'AccountName', 'UniversityName', 'LScore', 'EScore', 'Substitutions'});
+T = cell2table(scoreC,'VariableNames', {'AccountName', 'UniversityName', 'URL', 'LScore', 'EScore', 'Substitutions'});
 
 %% delete empty rows to save space
 from = find(cellfun(@isempty,table2cell(T(:,1))), 1);

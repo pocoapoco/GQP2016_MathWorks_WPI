@@ -16,9 +16,22 @@ country = char(Countries.United_States);
 country = regexprep(country,'[_]',' ','ignorecase');
 
 % Schoollist is pre-processed and saved - ONLY ONE TIME RUN
-%%TSchools = preProcessUniversities(pathSchoollist, country);
+%TSchools = preProcessUniversities(pathSchoollist, country);
+load('TSchools.mat');
 
 % Accountlist is processed every time you look for a match from a different
 % country
-TAccounts = processAccountList(pathAccountList, country);
+%TAccounts = processAccountList(pathAccountList, country);
+load('TAccounts.mat');
+
+% Jaccard/Levenshtein for similarity computation
+% Jaccard Index
+Tscore = calculateJScore(TAccounts, TSchools);
+
+% Levenshtein distance
+%Tscore = calculateEScore(TAccounts, TSchools);
+
+%% Copy Tscore to excel sheet for more analysis
+filename = 'scorelist.xlsx';
+writetable(Tscore,filename,'Sheet',1)
 
