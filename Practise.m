@@ -27,13 +27,13 @@
 %   fprintf('\t%15s distance = %d\n',distances{i},d);
 % end
 
-% 
-% ss = 'M.G. Un-iversit''y /Oregan,'
-% expression = '[\.-,\'']';
-% replace = '';
-% w = regexprep(ss,expression,replace,'ignorecase');
-% 
-% w
+
+ss = 'M.G. Un-iversit''y /Oreg\an, )ad_)'
+expression = '[\.-,\''\/\\_()]';
+replace = '';
+w = regexprep(ss,expression,replace,'ignorecase');
+
+w
 % 
 
 % x = 'coursera';
@@ -41,11 +41,11 @@
 % out=any(cell2mat(regexpi(x,'coursera')));
 % out
 
-univName = '(ed: dkd)';
- expression = '(\(ID:)';
-     p=    regexpi(univName,expression);
-
-p
+% univName = '(ed: dkd)';
+%  expression = '(\(ID:)';
+%      p=    regexpi(univName,expression);
+% 
+% p
 
 
 

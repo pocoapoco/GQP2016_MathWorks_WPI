@@ -1,4 +1,4 @@
-function [jaccardIdx] = jaccard_similarity(word_Orig, word_User, n_gram, remove_stop)
+function [jaccardIdx] = jaccard_similarity(word_User, word_Orig, n_gram, remove_stop)
 % Jaccard index and distance co-efficient of Actual university name with
 % that of user entered university name
 % Usage: [index] = jaccard_coefficient(Orig_word,User_Image,n_gram);
@@ -11,6 +11,7 @@ function [jaccardIdx] = jaccard_similarity(word_Orig, word_User, n_gram, remove_
 if remove_stop
  [word_Orig, word_User]= remove_stopword(word_Orig, word_User);
 end
+
 
 s1 = regexp(word_Orig,'<s>|\w*|</s>','match');
 s2 = regexp(word_User,'<s>|\w*|</s>','match');

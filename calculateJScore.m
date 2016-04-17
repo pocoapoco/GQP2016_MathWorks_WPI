@@ -2,8 +2,8 @@ function T = calculateJScore(TAccounts, TSchools)
 
 %% Change sample test & size here
 %%[sample,idx] = datasample(TAccounts(:,1),100);
-load('sample.mat');
-%%sample = {'west virginia university'};
+%%load('sample.mat');
+sample = {'university of miami/mt sinai hospital'};
 
 %% pre-allocate to the size of cartesian product
 rows = (length(sample)*height(TSchools));
@@ -26,8 +26,14 @@ for i = 1:length(sample)
         UNIVName = table2cell(UNIVName);
         url = TCandidates(j,'URL');
         url = table2cell(url);
-        score = jaccard_similarity(actName{1}, univName{1}, 2, true);
-              
+        
+        if isMultipleWords(actName{1})
+            score = getHighestScore(actName{1}, univName{1}, 2, true);
+        else
+            score = jaccard_similarity(actName{1}, univName{1}, 2, true);
+        end
+        
+                      
         %% set threshold limit here
         %% Approx. Match criteria
         %% Jaccard Index for Bigram, Unigram or Trigram greater than 0.7 yields accurate results
@@ -66,4 +72,23 @@ T = cell2table(scoreC,'VariableNames', {'AccountName', 'UniversityName', 'URL', 
 from = find(cellfun(@isempty,table2cell(T(:,1))), 1);
 T(from:end,:)=[];
 
+function jScore = getHighestScore(actName, univName, n_grams, remove_stop)
+w = strsplit(actName,'/');
+scores = zeros(1,length(w));
+for k=1:length(w)
+    scores(1,k) = jaccard_similarity(w{k}, univName, n_grams, remove_stop);
+end
+jScore = max(scores);
+end
+
+% Split by / and get the word that can give a better score
+function flag = isMultipleWords(actName)
+startIndex = regexpi(actName,'/', 'once');
+if ~isempty(startIndex)
+    flag = true;
+else   
+    flag = false;
+end
+end
+end
 

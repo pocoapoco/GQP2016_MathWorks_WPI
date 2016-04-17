@@ -33,6 +33,11 @@ elseif (isempty(isSchoollist) && strcmpi(country,'United States'))
     TSchools = [TSchools t1];
     TSchools.Properties.VariableNames{end} = 'LUniversityLocalName';
     
+    % Replace punctuations by space
+    rule2 = @preProcessingRules.removePunctuations;
+    t2 = varfun(rule2,TSchools,'InputVariables','LUniversityLocalName');
+    TSchools.LUniversityLocalName = t2.Fun_LUniversityLocalName;
+    
     % Generate unigram for universitylocalname
     rule4 = @preProcessingRules.generateUnigram;
     t2 = varfun(rule4,TSchools,'InputVariables','LUniversityLocalName');
