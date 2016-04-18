@@ -1,9 +1,10 @@
 function T = calculateJScore(TAccounts, TSchools)
 
 %% Change sample test & size here
-%%[sample,idx] = datasample(TAccounts(:,1),100);
+[sample,idx] = datasample(TAccounts(:,1),100);
 %%load('sample.mat');
-sample = {'university of miami/mt sinai hospital'};
+%%sample = {'university of miami/mt sinai hospital'};
+sample = table2cell(sample);
 
 %% pre-allocate to the size of cartesian product
 rows = (length(sample)*height(TSchools));
